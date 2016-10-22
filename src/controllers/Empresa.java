@@ -8,12 +8,16 @@ import exceptions.DivisaoPorZero;
 
 public class Empresa {
 
+	// porcertagem mínima de funcionários na empresa
+	private final float PORCENTAGEM_MINIMA_FUNCIONARIOS = 0.3F;
+
 	private String nome;
 
-	private List<Funcionario> funcionarios = new ArrayList<>();
+	private List<Funcionario> funcionarios;
 
 	public Empresa(String nome) {
 		setNome(nome);
+		setFuncionarios(new ArrayList<>());
 	}
 
 	public void fazerPagamentoFuncionarios() {
@@ -45,7 +49,8 @@ public class Empresa {
 			}
 
 			float porcetagemTerceirizados = (totalTercerizados + 1) / (totalFuncionarios + 1);
-			if (porcetagemTerceirizados > 0.3F) {
+
+			if (porcetagemTerceirizados > PORCENTAGEM_MINIMA_FUNCIONARIOS) {
 				throw new ContratacaoNaoPermitida();
 			}
 
