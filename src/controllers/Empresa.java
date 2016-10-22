@@ -7,63 +7,71 @@ import exceptions.ContratacaoNaoPermitida;
 import exceptions.DivisaoPorZero;
 
 public class Empresa {
+
 	private String nome;
+
 	private List<Funcionario> funcionarios = new ArrayList<>();
-	
+
 	public Empresa(String nome) {
-		super();
-		this.nome = nome;
+		setNome(nome);
 	}
-	
-	public void fazerPagamentoFuncionarios(){
-		for(Funcionario funcionario : funcionarios){
+
+	public void fazerPagamentoFuncionarios() {
+		for (Funcionario funcionario : getFuncionarios()) {
 			funcionario.receberSalario();
-			if(funcionario instanceof Terceirizado){
+			if (funcionario instanceof Terceirizado) {
 				((Terceirizado) funcionario).receberVale();
 			}
 		}
 	}
-	public void adimitirFuncionario(Funcionario f) throws DivisaoPorZero, ContratacaoNaoPermitida{
-		
-		if(f instanceof Terceirizado){
-			float totalFuncionarios = funcionarios.size();
-			float totalTercerizados = 0;
-			for(Funcionario funcionario : funcionarios){
-				if(funcionario instanceof Terceirizado){
-					totalTercerizados++;
-				}
+
+	private float quantidadeTerceirizados() {
+		float total = 0;
+		for (Funcionario funcionario : getFuncionarios()) {
+			if (funcionario instanceof Terceirizado) {
+				total++;
 			}
-			if(totalFuncionarios == 0){
+		}
+		return total;
+	}
+
+	public void adimitirFuncionario(Funcionario funcionario) throws DivisaoPorZero, ContratacaoNaoPermitida {
+		if (funcionario instanceof Terceirizado) {
+			float totalFuncionarios = getFuncionarios().size();
+			float totalTercerizados = quantidadeTerceirizados();
+
+			if (totalFuncionarios == 0) {
 				throw new DivisaoPorZero();
 			}
-			float porcetagemTerceirizados = (totalTercerizados+1)/(totalFuncionarios+1);	
-			if(porcetagemTerceirizados > 0.3F){
+
+			float porcetagemTerceirizados = (totalTercerizados + 1) / (totalFuncionarios + 1);
+			if (porcetagemTerceirizados > 0.3F) {
 				throw new ContratacaoNaoPermitida();
 			}
-			funcionarios.add(f);
-			System.out.println("Terceirazado "+f.getNome()+" contratado.");
+
+			getFuncionarios().add(funcionario);
+			System.out.println("Terceirazado " + funcionario.getNome() + " contratado.");
 			
-		}else{
-			funcionarios.add(f);
-			System.out.println("Funcionário "+f.getNome()+" contratado.");
-		}
-		
-	}
-	
-	public void demitirFuncionario(int matricula){
-		Funcionario f = buscarFuncionario(matricula);
-		if(f != null){
-			funcionarios.remove(f);
-			System.out.println("Funcionário "+f.getNome()+" demitido.");
-		}else{
-			System.out.println("Funcionário não encontrado com a matrícula "+matricula+" para demissão.");
+		} else {
+			funcionarios.add(funcionario);
+			System.out.println("Funcionário " + funcionario.getNome() + " contratado.");
 		}
 	}
-	
-	private Funcionario buscarFuncionario(int matricula){
-		for(Funcionario f : funcionarios){
-			if(f.getMatricula() == matricula){
-				return f;
+
+	public void demitirFuncionario(int matricula) {
+		Funcionario funcionario = buscarFuncionario(matricula);
+		if (funcionario != null) {
+			getFuncionarios().remove(funcionario);
+			System.out.println("Funcionário " + funcionario.getNome() + " demitido.");
+		} else {
+			System.out.println("Funcionário com a matrícula " + matricula + " não encontrado para demissão.");
+		}
+	}
+
+	private Funcionario buscarFuncionario(int matricula) {
+		for (Funcionario funcionario : getFuncionarios()) {
+			if (funcionario.getMatricula() == matricula) {
+				return funcionario;
 			}
 		}
 		return null;
@@ -72,15 +80,16 @@ public class Empresa {
 	public String getNome() {
 		return nome;
 	}
+
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
 	public List<Funcionario> getFuncionarios() {
 		return funcionarios;
 	}
+
 	public void setFuncionarios(List<Funcionario> funcionarios) {
 		this.funcionarios = funcionarios;
 	}
-	
-	
 }

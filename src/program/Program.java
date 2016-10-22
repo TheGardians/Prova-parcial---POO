@@ -19,7 +19,7 @@ public class Program {
 		Funcionario t1 = new Terceirizado(11, "Roger", "IBM");
 		Funcionario t2 = new Terceirizado(22, "Maria", "IBM");
 		Funcionario t3 = new Terceirizado(333, "Zezinho", "Microsoft");
-	
+
 		Empresa google = new Empresa("Google");
 
 		try {

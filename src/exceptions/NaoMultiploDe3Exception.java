@@ -3,13 +3,15 @@ package exceptions;
 public class NaoMultiploDe3Exception extends Exception {
 
 	private static final long serialVersionUID = -6236197870409765963L;
+
 	private int linha;
+
 	private int coluna;
 
 	public NaoMultiploDe3Exception(int linha, int coluna, String message) {
 		super(message);
-		this.linha = linha;
-		this.coluna = coluna;
+		setLinha(linha);
+		setColuna(coluna);
 	}
 
 	public int getLinha() {
